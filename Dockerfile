@@ -4,6 +4,8 @@ ARG BUILD_DATE
 ARG BUILD_VERSION=5.1.22
 ARG VCS_REF
 
+ENV NODE_ENV production
+
 RUN npm install -g "tiddlywiki@${BUILD_VERSION}"
 
 VOLUME /var/lib/tiddlywiki

@@ -6,9 +6,9 @@ Install docker.
 
 ## Quickstart
 
-    sudo docker run -d -p 8080:8080 mazzolino/tiddlywiki
+    sudo docker run -d -p 8080:8080 klutchell/tiddlywiki
 
-Now TiddlyWiki should be running on [http://localhost:8080](http://localhost:8080).
+Now TiddlyWiki should be running on <http://localhost:8080>.
 
 ## Keeping the data
 
