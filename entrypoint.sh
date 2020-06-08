@@ -4,15 +4,15 @@ set -e
 tiddlywiki_script="$(readlink -f "$(command -v tiddlywiki)")"
 
 if [ -n "$NODE_MEM" ]; then
-    # Based on rule of thumb from:
-    # http://fiznool.com/blog/2016/10/01/running-a-node-dot-js-app-in-a-low-memory-environment/
-    mem_node_old_space=$((("${NODE_MEM}"*4)/5))
-    NODEJS_V8_ARGS="--max_old_space_size=${mem_node_old_space} ${NODEJS_V8_ARGS}"
+  # Based on rule of thumb from:
+  # http://fiznool.com/blog/2016/10/01/running-a-node-dot-js-app-in-a-low-memory-environment/
+  mem_node_old_space=$((("${NODE_MEM}"*4)/5))
+  NODEJS_V8_ARGS="--max_old_space_size=${mem_node_old_space} ${NODEJS_V8_ARGS}"
 fi
 
 if [ ! -d /var/lib/tiddlywiki/mywiki ]
 then
-  /usr/bin/env node "${NODEJS_V8_ARGS}" "${tiddlywiki_script}" mywiki --init server
+  /usr/bin/env node ${NODEJS_V8_ARGS} "${tiddlywiki_script}" mywiki --init server
   mkdir -pv /var/lib/tiddlywiki/mywiki/tiddlers
 fi
 
@@ -21,15 +21,14 @@ fi
 WEBHOST_TID=/var/lib/tiddlywiki/mywiki/tiddlers/\$__config_tiddlyweb_host.tid
 if [ -n "${SERVE_URI}" ]
 then
-  cp -av /tiddlyweb_host_template "${WEBHOST_TID}"
+  cp -av /host.tid "${WEBHOST_TID}"
   echo "\$protocol\$//\$host\$${SERVE_URI}/" >> "${WEBHOST_TID}"
-  echo "tiddlywiki will be served at ${SERVE_URI}"
-elif [ -e "${WEBHOST_TID}" ]; then
-  rm -v "${WEBHOST_TID}"
+else
+  rm -v "${WEBHOST_TID}" 2>/dev/null || true
 fi
 
 # Start the tiddlywiki server
-exec /usr/bin/env node "${NODEJS_V8_ARGS}" "${tiddlywiki_script}" \
+exec /usr/bin/env node ${NODEJS_V8_ARGS} "${tiddlywiki_script}" \
   mywiki --server 8080 $:/core/save/all text/plain text/html \
   "${USERNAME:-user}" "${PASSWORD:-wiki}" 0.0.0.0 "${SERVE_URI}"
 

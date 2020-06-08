@@ -47,11 +47,11 @@ jobs:
       - name: image build
         run: docker buildx build . --pull --platform ${{ matrix.PLATFORM }} --tag ${{ secrets.DOCKERHUB_REPOSITORY }} --load
 
-      # - name: image test
-      #   run: |
-      #     docker run --rm -d --name tiddlywiki ${{ secrets.DOCKERHUB_REPOSITORY }}
-      #     docker run --rm --link tiddlywiki curl TODO | tee /dev/stderr | grep -q NOERROR
-      #     docker stop tiddlywiki
+      - name: image test
+        run: |
+          docker run --rm -d --name tiddlywiki ${{ secrets.DOCKERHUB_REPOSITORY }}
+          docker run --rm --link tiddlywiki curlimages/curl -s -o /dev/null -w "%{http_code}" http://user:wiki@tiddlywiki:8080
+          docker stop tiddlywiki
 
   deploy:
     if: github.event_name != 'pull_request'

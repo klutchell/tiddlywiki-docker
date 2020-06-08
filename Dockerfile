@@ -12,8 +12,7 @@ VOLUME /var/lib/tiddlywiki
 
 WORKDIR /var/lib/tiddlywiki
 
-COPY tiddlyweb_host /tiddlyweb_host_template
-COPY entrypoint.sh /
+COPY host.tid entrypoint.sh /
 
 CMD [ "/entrypoint.sh" ]
 
