@@ -50,6 +50,7 @@ jobs:
       - name: image test
         run: |
           docker run --rm -d --name tiddlywiki ${{ secrets.DOCKERHUB_REPOSITORY }}
+          sleep 5
           docker run --rm --link tiddlywiki curlimages/curl -s -o /dev/null -w "%{http_code}" http://user:wiki@tiddlywiki:8080
           docker stop tiddlywiki
 
