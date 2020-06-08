@@ -29,7 +29,7 @@ jobs:
       - name: docker install
         run: curl -fsSL get.docker.com | sh
 
-      - name: builx install
+      - name: buildx install
         run: |
           mkdir -p ~/.docker/cli-plugins
           wget https://github.com/docker/buildx/releases/download/v0.4.1/buildx-v0.4.1.linux-amd64 -O ~/.docker/cli-plugins/docker-buildx
@@ -45,11 +45,11 @@ jobs:
         run: docker buildx create --use --driver docker-container
 
       - name: image build
-        run: docker buildx build . --pull --platform ${{ matrix.PLATFORM }} --tag ${DOCKERHUB_REPOSITORY} --load
+        run: docker buildx build . --pull --platform ${{ matrix.PLATFORM }} --tag ${{ secrets.DOCKERHUB_REPOSITORY }} --load
 
       # - name: image test
       #   run: |
-      #     docker run --rm -d --name tiddlywiki ${DOCKERHUB_REPOSITORY}
+      #     docker run --rm -d --name tiddlywiki ${{ secrets.DOCKERHUB_REPOSITORY }}
       #     docker run --rm --link tiddlywiki curl TODO | tee /dev/stderr | grep -q NOERROR
       #     docker stop tiddlywiki
 
